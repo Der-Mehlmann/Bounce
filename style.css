@@ -1,0 +1,305 @@
+body, html {
+    height: auto;
+    width: auto;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #BF907E;
+    padding: 20px;
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: bold;
+}
+
+body {
+    padding: 0;
+}
+
+#screen-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: red;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: opacity 0.1s ease;
+}
+
+
+h1 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #260C02;
+    font-size: 60px;
+    display: flex;
+    margin: 0;
+    padding-bottom: 20px;
+}
+
+h2 {
+    margin: 0;
+}
+
+.button {
+    background-color: #F25C05;
+    color: #260C02;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 15px;
+    width: 200px;
+    justify-content: center;
+}
+
+.button-HM {
+    background-color: #F25C05;
+    color: #260C02;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 15px;
+    width: 200px;
+    justify-content: center;
+}
+
+#start .button {
+    height: max-content;
+    width: max-content;
+    margin-top: 320px;
+}
+
+#startButton {
+    font-size: 40px;
+}
+
+#settingButton {
+    height: max-content;
+    width: max-content;
+    margin-top: 100px;
+    font-size: 15px;
+}
+
+#stats {
+    display: none;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 50px;
+    color: #260C02;
+}
+
+.stats-U {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin: 0;
+}
+
+#P-R {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    width: 200px;
+    min-width: 200px;
+}
+
+#MainGameContainer {
+    display: flex;
+    flex-direction: row; /* Nebeneinander */
+    align-items: center;
+    justify-content: center; /* gleichmäßige Verteilung */
+    gap: 10px; /* Abstand zwischen Canvas und Items */
+    width: 100%;
+
+}
+
+#GAME {
+    display: none;
+    width: 720px;
+    height: 600px;
+    position: relative;
+    margin: 30px;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid #260C02;
+    cursor: crosshair;
+}
+
+#start {
+    display: flex;
+    height: 300px;
+    width: 300px;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+#Buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#GR {
+    display: none;
+}
+
+#GP {
+    display: none;
+}
+
+#RG {
+    display: none;
+    margin-top: 30px;
+}
+
+#HM {
+    display: none;
+    margin-top: 30px;
+}
+
+#Stop-Win {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+#Stop-Kill {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+#Items {
+    display: none;
+    flex-direction: column; /* Jedes Item übereinander */
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    gap: 20px;
+    color: #260C02;
+    width: 200px;
+    min-width: 200px;
+}
+
+.item {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#BB-IMG {
+    filter: grayscale(100%) brightness(50%);
+    transition: filter 0.3s ease;
+}
+
+#D-IMG {
+    filter: grayscale(100%) brightness(50%);
+    transition: filter 0.3s ease;
+}
+
+#FP-IMG {
+    filter: grayscale(100%) brightness(50%);
+    transition: filter 0.3s ease;
+}
+
+#LP-IMG {
+    filter: grayscale(100%) brightness(50%);
+    transition: filter 0.3s ease;
+}
+
+@keyframes pulse {
+    0%   { transform: scale(1);   filter: grayscale(0%) brightness(100%); }
+    50%  { transform: scale(1.1); filter: grayscale(50%) brightness(80%); }
+    100% { transform: scale(1);   filter: grayscale(0%) brightness(100%); }
+}
+
+.pulse {
+    animation: pulse 1s infinite ease-in-out;
+}
+
+#Settings {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 20px;
+}
+
+.button-S {
+    background-color: #260C02;
+    color: #F25C05;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 15px;
+    align-self: center;
+    height: min-content;
+    width: max-content;
+}
+
+#Settings form {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    gap: 30px;
+    width: 800px;
+}
+
+#Settings div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+input {
+    width: 100px;
+    height: 30px;
+    border-radius: 15px;
+    border: none;
+    text-align: center;
+    font-size: 20px;
+    font-family: "Space Grotesk", sans-serif;
+}
+
