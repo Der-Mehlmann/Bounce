@@ -369,7 +369,8 @@ function HomeScreen() {
     document.getElementById("stats").style.display = "none"
     document.getElementById("Items").style.display = "none"
     document.getElementById("HM").style.display = "none"
-    document.getElementById("settings").style.display = "none"
+    document.getElementById("Settings").style.display = "none"
+    document.getElementById("Settings-F").style.display = "none"
 
 
 }
@@ -390,6 +391,7 @@ function settings() {
     document.getElementById("MainGameContainer").style.display = "none"
     document.getElementById("start").style.display = "none"
     document.getElementById("Settings").style.display = "flex"
+    document.getElementById("Settings-F").style.display = "flex"
 }
 
 function gamePause() {
