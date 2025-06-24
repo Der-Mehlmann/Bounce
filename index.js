@@ -369,6 +369,7 @@ function HomeScreen() {
     document.getElementById("stats").style.display = "none"
     document.getElementById("Items").style.display = "none"
     document.getElementById("HM").style.display = "none"
+    document.getElementById("Settings").style.display = "none"
 
 
 }
