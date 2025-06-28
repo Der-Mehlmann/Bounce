@@ -14,6 +14,11 @@ const item = new Audio('item.wav');
 document.addEventListener("keydown", keyDownHandler);
 document.addEventListener("keyup", keyUpHandler);
 document.addEventListener("mousemove", mouseMoveHandler);
+document.getElementById("Settings-F").addEventListener("submit", function (e) {
+    e.preventDefault();
+    // Save logic here
+});
+
 
 // Steuerung
 let rightPressed = false;
@@ -67,17 +72,17 @@ let ran = 0
 
 let bigBallLock = true
 let fastPaddleLock = true
-let longPeddalLock = true
+let longPaddleLock = true
 let damageLock = true
 
 let bigBallUnlock = false
 let fastPaddleUnlock = false
-let longPeddalUnlock = false
+let longPaddleUnlock = false
 let damageUnlock = false
 
 let bigBall = false
 let fastPaddle = false
-let longPeddal = false
+let longPaddle = false
 let damage = false
 
 // Steuerungsfunktionen
@@ -98,12 +103,12 @@ function keyDownHandler(e) {
         if (soundEffects === true) {
             itemSound()
         }
-    } else if (e.key === "3" && longPeddalLock === false) {
-        itemlongPeddal()
+    } else if (e.key === "3" && longPaddleLock === false) {
+        itemlongPaddle()
         if (soundEffects === true) {
             itemSound()
         }
-    }else if (e.key === "4" && damageLock === false) {
+    } else if (e.key === "4" && damageLock === false) {
         itemDamage()
         if (soundEffects === true) {
             itemSound()
@@ -128,12 +133,12 @@ function keyUpHandler(e) {
         if (soundEffects === true) {
             itemSound()
         }
-    } else if (e.key === "3" && longPeddalLock === false) {
-        itemlongPeddal()
+    } else if (e.key === "3" && longPaddleLock === false) {
+        itemlongPaddle()
         if (soundEffects === true) {
             itemSound()
         }
-    }else if (e.key === "4" && damageLock === false) {
+    } else if (e.key === "4" && damageLock === false) {
         itemDamage()
         if (soundEffects === true) {
             itemSound()
@@ -175,14 +180,14 @@ function drawCircle(x, y, color) {
     ctx.stroke();
 }
 
-function drawPaddle(a, b, color) {
-    ctx.beginPath()
-    ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight)
-    ctx.fillStyle = color
-    ctx.fill()
-    ctx.strokeStyle = '#260C02';
-    ctx.stroke();
+function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#260C02";
+    ctx.fill();
+    ctx.closePath();
 }
+
 
 // Init Funktionen
 function setBrick() {
@@ -252,6 +257,7 @@ function collisionDetection() {
 
                     // Zufälliges Item bestimmen
                     ran = Math.floor(Math.random() * 5) + 1;
+                    itemLock()
                 }
             }
         }
@@ -274,7 +280,13 @@ function soundExplode() {
 }
 
 function soundHit() {
-    hit.play()
+    if (y + ballRad >= 600) {
+        hitAndKill()
+
+        if (soundEffects === true) {
+            hit.play()
+        }
+    }
 }
 
 function soundItemUnlock() {
@@ -328,9 +340,15 @@ function gameRestart() {
     hits = 0
     bigBall = false
     fastPaddle = false
-    longPeddal = false
+    longPaddle = false
     damage = false
     pause = false
+    x = canvas.width / 2
+    y = canvas.height - 30
+    dx = 2
+    dy = -2
+    paddleX = (canvas.width - paddleWidth) / 2
+
 
     setBrick()
     draw()
@@ -355,7 +373,7 @@ function HomeScreen() {
     hits = 0
     bigBall = false
     fastPaddle = false
-    longPeddal = false
+    longPaddle = false
     damage = false
     pause = true
 
@@ -378,7 +396,7 @@ function HomeScreen() {
 function gameStart() {
     setBrick()
     draw()
-    speed = 5
+    paddleSpeed = 5
     pause = false
     document.getElementById("start").style.display = "none"
     document.getElementById("GAME").style.display = "block"
@@ -437,12 +455,12 @@ function unlockFastPaddle() {
     }
 }
 
-function unlockLongPeddal() {
+function unlockLongPaddle() {
     document.getElementById("LP-IMG").style.filter = "grayscale(0%)"
-    longPeddalLock = false
-    if (soundEffects === true && longPeddalUnlock === false) {
+    longPaddleLock = false
+    if (soundEffects === true && longPaddleUnlock === false) {
         soundItemUnlock()
-        longPeddalUnlock = true
+        longPaddleUnlock = true
     }
 }
 
@@ -483,6 +501,7 @@ function startCountdownBigBall() {
 function startCountdownFastPaddle() {
     const img = document.getElementById("FP-IMG");
     img.classList.add("pulse");   // Puls‑Animation einschalten
+    paddleSpeed = paddleSpeed * 2;
 
     let remaining = itemTime;
     const interval = setInterval(() => {
@@ -511,10 +530,10 @@ function startCountdownLongPaddle() {
             clearInterval(interval);
             img.classList.remove("pulse");
 
-            longPeddal = false;
-            longPeddalLock = true;
+            longPaddle = false;
+            longPaddleLock = true;
             paddleWidth = paddleWidth / 2;
-            longPeddalUnlock = false;
+            longPaddleUnlock = false;
             img.style.filter = "grayscale(100%) brightness(50%)";
         }
     }, 1000);
@@ -548,7 +567,7 @@ function itemLock() {
         unlockFastPaddle()
     }
     if (ran === 3) {
-        unlockLongPeddal()
+        unlockLongPaddle()
     }
     if (ran === 4) {
         unlockDamage()
@@ -572,10 +591,10 @@ function itemFastPaddle() {
     }
 }
 
-function itemlongPeddal() {
+function itemlongPaddle() {
     startCountdownLongPaddle()
 
-    if (longPeddal === true) {
+    if (longPaddle === true) {
         paddleWidth = paddleWidth * 2
     }
 }
@@ -589,12 +608,9 @@ function itemDamage() {
 }
 
 
-
 //Game
 function draw() {
     if (pause) return;
-
-    itemLock()
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -608,7 +624,7 @@ function draw() {
 
     drawBricks();
     drawCircle(x, y, '#F24405')
-    drawPaddle(a, b, '#260C02')
+    drawPaddle()
 
 
     if (hits === goal) {
@@ -623,16 +639,14 @@ function draw() {
         fastPaddle = true
         unlockFastPaddle()
     }
-    if (longPeddalLock === false) {
-        longPeddal = true
-        unlockLongPeddal()
+    if (longPaddleLock === false) {
+        longPaddle = true
+        unlockLongPaddle()
     }
     if (damageLock === false) {
         damage = true
         unlockDamage()
     }
-
-
 
 
     collisionDetection()
@@ -651,22 +665,18 @@ function draw() {
         dy = -dy;
     }
 
-
-    if (rightPressed && paddleX < canvas.width - paddleWidth && fastPaddle === false) {
+    if (rightPressed && paddleX < canvas.width - paddleWidth) {
         paddleX += paddleSpeed;
-    } else if (leftPressed && paddleX > 0 && fastPaddle === false) {
-        paddleX -= paddleSpeed;
-    } else if (rightPressed && paddleX < canvas.width - paddleWidth && fastPaddle === true) {
-        paddleX += paddleSpeed;
-    } else if (leftPressed && paddleX > 0 && fastPaddle === true) {
+    } else if (leftPressed && paddleX > 0) {
         paddleX -= paddleSpeed;
     }
 
 
     document.getElementById("PointsJS").innerHTML = `${points}`
 
+
     x += dx
-    y -= dy
+    y += dy
 
 
 }
