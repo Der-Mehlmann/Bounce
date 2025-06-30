@@ -323,7 +323,7 @@ function winner() {
 }
 
 function hitAndKill() {
-    lives--
+    lives = lives - 1
     document.getElementById("LivesJS").innerHTML = `${lives}`
     screenFlash()
 
@@ -403,6 +403,7 @@ function gameStart() {
     document.getElementById("GP").style.display = "flex"
     document.getElementById("stats").style.display = "flex"
     document.getElementById("Items").style.display = "flex"
+    document.getElementById("MainGameContainer").style.display = "flex"
 }
 
 function settings() {
