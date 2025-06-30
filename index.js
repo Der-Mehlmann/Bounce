@@ -108,7 +108,11 @@ function HomeScreen() {
 document.getElementById("Settings-F").addEventListener("submit", function (e) {
     e.preventDefault();
     // Save logic here
-    soundEffects = document.getElementById("soundEffects").value;
+    if (document.getElementById("soundEffects").checked) {
+        soundEffects = true
+    } else {
+        soundEffects = false
+    }
     paddleWidth = parseInt(document.getElementById("paddleWidth").value)
     paddleSpeed = parseInt(document.getElementById("paddleSpeed").value)
     rows = parseInt(document.getElementById("rows").value)
