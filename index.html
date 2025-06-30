@@ -40,36 +40,42 @@
     <form id="Settings-F">
         <div>
             <label for="soundEffects">Soundeffects</label>
+            <hr>
             <input type="checkbox" id="soundEffects" name="soundEffects" checked>
         </div>
         <div>
             <label for="paddleWidth">Paddle Width</label>
+            <hr>
             <input type="number" id="paddleWidth" name="paddleWidth" min="10" max="100" value="75">
         </div>
         <div>
             <label for="paddleSpeed">Paddle Speed</label>
+            <hr>
             <input type="number" id="paddleSpeed" name="paddleSpeed" min="1" max="10" value="5">
         </div>
         <div>
             <label for="rows">Rows</label>
+            <hr>
             <input type="number" id="rows" name="rows" min="1" max="7" value="3">
         </div>
-
-
         <div>
             <label for="cols">Cols</label>
+            <hr>
             <input type="number" id="cols" name="cols" min="1" max="7" value="7">
         </div>
         <div>
             <label for="ballRad">Ball Radius</label>
+            <hr>
             <input type="number" id="ballRad" name="ballRad" min="1" max="10" value="4">
         </div>
         <div>
             <label for="lives">Lives</label>
+            <hr>
             <input type="number" id="livesS" name="lives" min="1" max="10" value="5">
         </div>
         <div>
             <label for="itemTime">Item Time</label>
+            <hr>
             <input type="number" id="itemTime" name="itemTime" min="1" max="300" value="5">
         </div>
 
@@ -95,7 +101,7 @@
             </div>
         </div>
         <div>
-            <button class="button" id="GP" onclick="gamePause()">Pause Game</button>
+            <button class="button" id="GP" onclick="gamePause()">Pause Game (Esc)</button>
             <button class="button" id="GR" onclick="gameResume()">Resume Game</button>
             <button class="button" id="RG" onclick="gameRestart()">Restart Game</button>
             <button class="button" id="HM" onclick="HomeScreen()">Homescreen</button>
@@ -113,19 +119,19 @@
     <div id="Items">
         <div class="item">
             <img id="BB-IMG" src="BIGBall.webp" height="50" width="50" alt="Big Ball">
-            <p id="bigBall">Big Ball</p>
+            <p id="bigBall">Big Ball (1)</p>
         </div>
         <div class="item">
             <img id="FP-IMG" src="FastPaddle.webp" height="50" width="50" alt="Fast Paddle">
-            <p id="fastPaddle">Fast Paddle</p>
+            <p id="fastPaddle">Fast Paddle (2)</p>
         </div>
         <div class="item">
             <img id="LP-IMG" src="LongPaddle.webp" height="50" width="50" alt="Long Paddle">
-            <p id="longPeddal">Long Peddal</p>
+            <p id="longPeddal">Long Peddal (3)</p>
         </div>
         <div class="item">
             <img id="D-IMG" src="https://placehold.co/50x50" height="50" width="50" alt="Damage">
-            <p id="Damage">Damage</p>
+            <p id="Damage">Fast Ball (4)</p>
         </div>
     </div>
 </div>
