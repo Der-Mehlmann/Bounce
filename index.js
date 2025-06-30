@@ -60,6 +60,7 @@ let hits = 0
 let originalBallRad = 4;
 let originalPaddleSpeed = 5;
 let originalPaddleWidth = 75;
+let originalLives = 5
 
 let goal = rows * cols
 
@@ -121,6 +122,7 @@ document.getElementById("Settings-F").addEventListener("submit", function (e) {
     cols = parseInt(document.getElementById("cols").value)
     ballRad = parseInt(document.getElementById("ballRad").value)
     lives = parseInt(document.getElementById("lives").value)
+    originalLives = parseInt(document.getElementById("lives").value)
     itemTime = parseInt(document.getElementById("itemTime").value)
     originalPaddleWidth = parseInt(document.getElementById("paddleWidth").value)
     originalBallRad = parseInt(document.getElementById("ballRad").value)
@@ -354,16 +356,18 @@ function hitAndKill() {
     document.getElementById("LivesJS").innerHTML = `${lives}`
     screenFlash()
 
-    if (lives === 0) {
+    if (lives <= 0) {
         fastPaddle = false
         bigBall = false
+        longPaddle = false
+        ballSpeed = false
         kill()
     }
 }
 
 function gameRestart() {
 
-    lives = lives
+    lives = originalLives
     points = 0
     hits = 0
     bigBall = false
@@ -398,6 +402,15 @@ function gameRestart() {
 
 
 function gameStart() {
+    lives = originalLives
+    points = 0
+    hits = 0
+    bigBall = false
+    fastPaddle = false
+    longPaddle = false
+    ballSpeed = false
+    pause = false
+
     setBrick()
     draw()
     pause = false
