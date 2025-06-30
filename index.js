@@ -85,14 +85,7 @@ let longPaddle = false
 let ballSpeed = false
 
 function HomeScreen() {
-    lives = lives
-    points = 0
-    hits = 0
-    bigBall = false
-    fastPaddle = false
-    longPaddle = false
-    ballSpeed = false
-    pause = true
+
 
     document.getElementById("GAME").style.display = "none"
     document.getElementById("Stop-Win").style.display = "none"
@@ -121,8 +114,8 @@ document.getElementById("Settings-F").addEventListener("submit", function (e) {
     rows = parseInt(document.getElementById("rows").value)
     cols = parseInt(document.getElementById("cols").value)
     ballRad = parseInt(document.getElementById("ballRad").value)
-    lives = parseInt(document.getElementById("lives").value)
-    originalLives = parseInt(document.getElementById("lives").value)
+    originalLives = parseInt(document.getElementById("livesS").value)
+    lives = parseInt(document.getElementById("livesS").value)
     itemTime = parseInt(document.getElementById("itemTime").value)
     originalPaddleWidth = parseInt(document.getElementById("paddleWidth").value)
     originalBallRad = parseInt(document.getElementById("ballRad").value)
@@ -382,6 +375,8 @@ function gameRestart() {
     dy = -1
     paddleX = (canvas.width - paddleWidth) / 2
 
+    console.log("originalLives:", originalLives);
+    console.log("lives:", lives);
 
     setBrick()
     draw()
@@ -403,6 +398,8 @@ function gameRestart() {
 
 function gameStart() {
     lives = originalLives
+    console.log("originalLives:", originalLives);
+    console.log("lives:", lives);
     points = 0
     hits = 0
     bigBall = false
