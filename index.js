@@ -114,11 +114,7 @@ function HomeScreen() {
 document.getElementById("Settings-F").addEventListener("submit", function (e) {
     e.preventDefault();
     // Save logic here
-    if (document.getElementById("soundEffects").checked) {
-        soundEffects = true
-    } else {
-        soundEffects = false
-    }
+    soundEffects = document.getElementById("soundEffects").checked;
     paddleWidth = parseInt(document.getElementById("paddleWidth").value)
     paddleSpeed = parseInt(document.getElementById("paddleSpeed").value)
     rows = parseInt(document.getElementById("rows").value)
@@ -392,7 +388,7 @@ function clearAllItemTimers() {
     document.getElementById("LP-IMG").classList.remove("pulse");
     document.getElementById("D-IMG").classList.remove("pulse");
 
-    // Alle Item-Icons auf gesperrt setzen
+    // Alle Item-Icons aufgesperrt setzen
     document.getElementById("BB-IMG").style.filter = "grayscale(100%) brightness(50%)";
     document.getElementById("FP-IMG").style.filter = "grayscale(100%) brightness(50%)";
     document.getElementById("LP-IMG").style.filter = "grayscale(100%) brightness(50%)";
@@ -658,7 +654,7 @@ function itemLock() {
 function itemBigBall() {
     startCountdownBigBall()
 
-    if (bigBall === true && ballRad != ballRad * 2) {
+    if (bigBall === true && ballRad !== ballRad * 2) {
         ballRad = ballRad * 2
         bigBallLock = true
     }
@@ -667,7 +663,7 @@ function itemBigBall() {
 function itemFastPaddle() {
     startCountdownFastPaddle()
 
-    if (fastPaddle === true && paddleSpeed != paddleSpeed * 2) {
+    if (fastPaddle === true && paddleSpeed !== paddleSpeed * 2) {
         paddleSpeed = paddleSpeed * 2
         fastPaddleLock = true
     }
@@ -676,7 +672,7 @@ function itemFastPaddle() {
 function itemlongPaddle() {
     startCountdownLongPaddle()
 
-    if (longPaddle === true && paddleSpeed != paddleSpeed * 2) {
+    if (longPaddle === true && paddleSpeed !== paddleSpeed * 2) {
         paddleWidth = paddleWidth * 2
         longPaddleLock = true
     }
