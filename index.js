@@ -84,6 +84,12 @@ let fastPaddle = false
 let longPaddle = false
 let ballSpeed = false
 
+let bigBallTimer = null;
+let fastPaddleTimer = null;
+let longPaddleTimer = null;
+let ballSpeedTimer = null;
+
+
 function HomeScreen() {
 
 
@@ -362,21 +368,77 @@ function hitAndKill() {
     }
 }
 
-function gameRestart() {
+function clearAllItemTimers() {
+    if (bigBallTimer) {
+        clearInterval(bigBallTimer);
+        bigBallTimer = null;
+    }
+    if (fastPaddleTimer) {
+        clearInterval(fastPaddleTimer);
+        fastPaddleTimer = null;
+    }
+    if (longPaddleTimer) {
+        clearInterval(longPaddleTimer);
+        longPaddleTimer = null;
+    }
+    if (ballSpeedTimer) {
+        clearInterval(ballSpeedTimer);
+        ballSpeedTimer = null;
+    }
 
-    lives = originalLives
+    // Alle Puls-Animationen entfernen
+    document.getElementById("BB-IMG").classList.remove("pulse");
+    document.getElementById("FP-IMG").classList.remove("pulse");
+    document.getElementById("LP-IMG").classList.remove("pulse");
+    document.getElementById("D-IMG").classList.remove("pulse");
+
+    // Alle Item-Icons auf gesperrt setzen
+    document.getElementById("BB-IMG").style.filter = "grayscale(100%) brightness(50%)";
+    document.getElementById("FP-IMG").style.filter = "grayscale(100%) brightness(50%)";
+    document.getElementById("LP-IMG").style.filter = "grayscale(100%) brightness(50%)";
+    document.getElementById("D-IMG").style.filter = "grayscale(100%) brightness(50%)";
+}
+
+function gameRestart() {
+    clearAllItemTimers()
+
+    // Spielwerte zurücksetzen (aber Benutzer-Settings beibehalten)
+    lives = originalLives  // Benutzer-gewählte Anzahl Leben
     points = 0
     hits = 0
+
+    // Ball und Paddle auf Benutzer-gewählte Grundwerte zurücksetzen
+    ballRad = originalBallRad        // Benutzer-gewählte Ball-Größe
+    paddleSpeed = originalPaddleSpeed // Benutzer-gewählte Paddle-Geschwindigkeit
+    paddleWidth = originalPaddleWidth // Benutzer-gewählte Paddle-Breite
+
+    // Alle temporären Item-Effekte deaktivieren
     bigBall = false
     fastPaddle = false
     longPaddle = false
     ballSpeed = false
+
+    // Item-System zurücksetzen
+    bigBallLock = true
+    fastPaddleLock = true
+    longPaddleLock = true
+    ballSpeedLock = true
+
+    bigBallUnlock = false
+    fastPaddleUnlock = false
+    longPaddleUnlock = false
+    ballSpeedUnlock = false
+
+    // Spiel-Status zurücksetzen
     pause = false
 
+    // Ball-Position und Grundgeschwindigkeit zurücksetzen
     x = canvas.width / 2
     y = canvas.height - 30
     dx = 1
     dy = -1
+
+    // Paddle-Position zurücksetzen (basierend auf aktueller Breite)
     paddleX = (canvas.width - paddleWidth) / 2
 
     console.log("originalLives:", originalLives);
@@ -496,17 +558,14 @@ function unlockBallSpeed() {
 
 function startCountdownBigBall() {
     const img = document.getElementById("BB-IMG");
-    // Klasse hinzufügen → startet das Pulsieren
     img.classList.add("pulse");
 
     let remaining = itemTime;
-    const interval = setInterval(() => {
+    bigBallTimer = setInterval(() => {
         remaining--;
-
-        // hier könntest du noch per innerText o.Ä. die Sekunde anzeigen …
         if (remaining <= 0) {
-            clearInterval(interval);
-            // Countdown zu Ende → Puls‑Effekt entfernen
+            clearInterval(bigBallTimer);
+            bigBallTimer = null;
             img.classList.remove("pulse");
             ballRad = originalBallRad
             bigBall = false;
@@ -520,19 +579,18 @@ function startCountdownBigBall() {
 
 function startCountdownFastPaddle() {
     const img = document.getElementById("FP-IMG");
-    img.classList.add("pulse");   // Puls‑Animation einschalten
+    img.classList.add("pulse");
 
     let remaining = itemTime;
-    const interval = setInterval(() => {
+    fastPaddleTimer = setInterval(() => {
         remaining--;
         if (remaining <= 0) {
-            clearInterval(interval);
-            img.classList.remove("pulse");  // Puls‑Animation ausschalten
-
+            clearInterval(fastPaddleTimer);
+            fastPaddleTimer = null;
+            img.classList.remove("pulse");
             paddleSpeed = originalPaddleSpeed
             fastPaddle = false;
             fastPaddleLock = true;
-            paddleSpeed = paddleSpeed / 2;
             fastPaddleUnlock = false;
             img.style.filter = "grayscale(100%) brightness(50%)";
         }
@@ -544,12 +602,12 @@ function startCountdownLongPaddle() {
     img.classList.add("pulse");
 
     let remaining = itemTime;
-    const interval = setInterval(() => {
+    longPaddleTimer = setInterval(() => {
         remaining--;
         if (remaining <= 0) {
-            clearInterval(interval);
+            clearInterval(longPaddleTimer);
+            longPaddleTimer = null;
             img.classList.remove("pulse");
-
             paddleWidth = originalPaddleWidth
             longPaddle = false;
             longPaddleLock = true;
@@ -560,17 +618,16 @@ function startCountdownLongPaddle() {
 }
 
 function startCountdownBallSpeed() {
-
     const img = document.getElementById("D-IMG");
     img.classList.add("pulse");
 
     let remaining = itemTime;
-    const interval = setInterval(() => {
+    ballSpeedTimer = setInterval(() => {
         remaining--;
         if (remaining <= 0) {
-            clearInterval(interval);
+            clearInterval(ballSpeedTimer);
+            ballSpeedTimer = null;
             img.classList.remove("pulse");
-
             ballSpeed = false;
             ballSpeedLock = true
             dx = dx / 2
