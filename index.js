@@ -454,6 +454,7 @@ function gameRestart() {
     document.getElementById("stats").style.display = "flex"
     document.getElementById("Items").style.display = "flex"
     document.getElementById("HM").style.display = "none"
+    gameLoop()
 }
 
 
@@ -480,6 +481,7 @@ function gameStart() {
     document.getElementById("stats").style.display = "flex"
     document.getElementById("Items").style.display = "flex"
     document.getElementById("MainGameContainer").style.display = "flex"
+    gameLoop()
 }
 
 function settings() {
@@ -512,6 +514,7 @@ function gameResume() {
     document.getElementById("RG").style.display = "none"
     document.getElementById("Items").style.display = "flex"
     document.getElementById("HM").style.display = "none"
+    gameLoop()
 
 }
 
@@ -742,11 +745,12 @@ function draw() {
 
     x += dx
     y += dy
-
-    let xxx = 0
-    xxx++
-
-    console.log(xxx)
 }
 
-drawInterval = setInterval(draw, 5)
+//drawInterval = setInterval(draw, 5)
+function gameLoop() {
+    draw();
+    if (!pause) {
+        requestAnimationFrame(gameLoop);  // ~60 FPS, optimiert
+    }
+}
