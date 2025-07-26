@@ -12,7 +12,7 @@ const item = new Audio('item.wav');
 
 // Eingabe listener
 document.addEventListener("keydown", keyDownHandler);
-//document.addEventListener("keyup", keyUpHandler);
+document.addEventListener("keyup", keyUpHandler);
 document.addEventListener("mousemove", mouseMoveHandler);
 
 
@@ -171,6 +171,14 @@ function keyDownHandler(e) {
     }
 }
 
+function keyUpHandler(e) {
+    if (e.key === "ArrowRight") {
+        rightPressed = false;  // ← RICHTIG: FALSE beim Loslassen
+    } else if (e.key === "ArrowLeft") {
+        leftPressed = false;   // ← RICHTIG: FALSE beim Loslassen
+    }
+}
+
 function mouseMoveHandler(e) {
     const rect = canvas.getBoundingClientRect();
     const relativeX = e.clientX - rect.left;
@@ -236,53 +244,55 @@ function collisionDetection() {
         for (let c = 0; c < cols; c++) {
             const b = bricks[r][c];
             if (b.status === 1) {
-                // Kollisionsbereich des Balls
-                const ballLeft = x - ballRad;
-                const ballRight = x + ballRad;
-                const ballTop = y - ballRad;
-                const ballBottom = y + ballRad;
+                // Kollisionsprüfung
+                if (x + ballRad > b.x && x - ballRad < b.x + brickWidth &&
+                    y + ballRad > b.y && y - ballRad < b.y + brickHeight) {
 
-                // Kollisionsbereich des Bricks
-                const brickLeft = b.x;
-                const brickRight = b.x + brickWidth;
-                const brickTop = b.y;
-                const brickBottom = b.y + brickHeight;
-
-                // Check for overlap (AABB collision detection)
-                const isCollision = (
-                    ballRight > brickLeft &&
-                    ballLeft < brickRight &&
-                    ballBottom > brickTop &&
-                    ballTop < brickBottom
-                );
-
-                if (isCollision) {
-                    // Bestimme die Tiefe der Überlappung
-                    const overlapLeft = ballRight - brickLeft;
-                    const overlapRight = brickRight - ballLeft;
-                    const overlapTop = ballBottom - brickTop;
-                    const overlapBottom = brickBottom - ballTop;
+                    // Bestimme Kollisionsrichtung
+                    const overlapLeft = (x + ballRad) - b.x;
+                    const overlapRight = (b.x + brickWidth) - (x - ballRad);
+                    const overlapTop = (y + ballRad) - b.y;
+                    const overlapBottom = (b.y + brickHeight) - (y - ballRad);
 
                     const minOverlapX = Math.min(overlapLeft, overlapRight);
                     const minOverlapY = Math.min(overlapTop, overlapBottom);
 
-                    // Reaktion: Richtung ändern je nach Kollisionstiefe
                     if (minOverlapX < minOverlapY) {
-                        dx = -dx;
+                        // Horizontale Kollision - Ball seitlich rausschieben
+                        if (overlapLeft < overlapRight) {
+                            x = b.x - ballRad - 1; // Links rausschieben
+                        } else {
+                            x = b.x + brickWidth + ballRad + 1; // Rechts rausschieben
+                        }
+                        dx = -dx; // Dann Richtung ändern
                     } else {
-                        dy = -dy;
+                        // Vertikale Kollision - Ball hoch/runter schieben
+                        if (overlapTop < overlapBottom) {
+                            y = b.y - ballRad - 1; // Nach oben schieben
+                        } else {
+                            y = b.y + brickHeight + ballRad + 1; // Nach unten schieben
+                        }
+                        dy = -dy; // Dann Richtung ändern
                     }
 
+                    // Sound abspielen
                     if (soundEffects === true) {
-                        soundExplode()
+                        soundExplode();
                     }
-                    b.status = 0; // Brick entfernen
-                    hits++;
-                    points++;
 
-                    // Zufälliges Item bestimmen
-                    ran = Math.floor(Math.random() * 5) + 1;
-                    itemLock()
+                    // Block entfernen und Punkte geben
+                    b.status = 0;
+                    hits++;
+                    points += 10;
+
+                    // Screen Flash Effekt
+                    screenFlash();
+
+                    // Zufälliges Item (20% Chance)
+                    if (Math.random() < 0.2) {
+                        const ran = Math.floor(Math.random() * 4) + 1;
+                        itemLock(ran);
+                    }
                 }
             }
         }
@@ -638,18 +648,18 @@ function startCountdownBallSpeed() {
 }
 
 
-function itemLock() {
+function itemLock(ran) {
     if (ran === 1) {
-        unlockBigBall()
+        unlockBigBall();
     }
     if (ran === 2) {
-        unlockFastPaddle()
+        unlockFastPaddle();
     }
     if (ran === 3) {
-        unlockLongPaddle()
+        unlockLongPaddle();
     }
     if (ran === 4) {
-        unlockBallSpeed()
+        unlockBallSpeed();
     }
 }
 
