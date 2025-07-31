@@ -84,10 +84,13 @@ let fastPaddle = false
 let longPaddle = false
 let ballSpeed = false
 
-let bigBallTimer = null;
-let fastPaddleTimer = null;
-let longPaddleTimer = null;
-let ballSpeedTimer = null;
+let bigBallTimer = null
+let fastPaddleTimer = null
+let longPaddleTimer = null
+let ballSpeedTimer = null
+
+let gameTimer = 0
+let timerInterval = null
 
 
 function HomeScreen() {
@@ -105,6 +108,7 @@ function HomeScreen() {
     document.getElementById("HM").style.display = "none"
     document.getElementById("Settings").style.display = "none"
     document.getElementById("Settings-F").style.display = "none"
+    document.getElementById("TimeFull").style.display = "none"
 
     // MainGameContainer wieder anzeigen, falls es ausgeblendet war
     document.getElementById("MainGameContainer").style.display = "flex"
@@ -349,6 +353,29 @@ function screenFlash() {
     }, 100);
 }
 
+function updateTimerDisplay() {
+    const minutes = Math.floor(gameTimer / 60)
+    const seconds = gameTimer % 60
+    // Format mm:ss
+    document.getElementById("time").textContent =
+        `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+}
+
+function startGameTimer() {
+    gameTimer = 0
+    updateTimerDisplay()
+    timerInterval = setInterval(() => {
+        gameTimer++
+        updateTimerDisplay()
+    }, 1000)
+}
+
+function stopGameTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval)
+        timerInterval = null
+    }
+}
 
 //Sound Funktionen
 function soundExplode() {
@@ -387,6 +414,7 @@ function kill() {
     document.getElementById("stats").style.display = "none"
     document.getElementById("Items").style.display = "none"
     document.getElementById("Stop-Kill-JS").innerHTML = `You achieved ${points} Points`
+    stopGameTimer()
 }
 
 function winner() {
@@ -399,6 +427,7 @@ function winner() {
     document.getElementById("stats").style.display = "none"
     document.getElementById("Items").style.display = "none"
     document.getElementById("Stop-Win-JS").innerHTML = `You achieved ${points} Points`
+    stopGameTimer()
 }
 
 function hitAndKill() {
@@ -505,7 +534,10 @@ function gameRestart() {
     document.getElementById("stats").style.display = "flex"
     document.getElementById("Items").style.display = "flex"
     document.getElementById("HM").style.display = "none"
+    document.getElementById("TimeFull").style.display = "block"
     gameLoop()
+    stopGameTimer()
+    startGameTimer()
 }
 
 
@@ -521,6 +553,7 @@ function gameStart() {
     longPaddle = false
     ballSpeed = false
     pause = false
+    stopGameTimer()
 
     setBrick()
 
@@ -538,7 +571,9 @@ function gameStart() {
     document.getElementById("stats").style.display = "flex"
     document.getElementById("Items").style.display = "flex"
     document.getElementById("MainGameContainer").style.display = "flex"
+    document.getElementById("TimeFull").style.display = "block"
     gameLoop()
+    startGameTimer()
 }
 
 function settings() {
