@@ -180,25 +180,43 @@ function keyUpHandler(e) {
 }
 
 function mouseMoveHandler(e) {
-    const rect = canvas.getBoundingClientRect();
-    const relativeX = e.clientX - rect.left;
+    const rect = canvas.getBoundingClientRect()
+    const relativeX = e.clientX - rect.left
     if (relativeX > 0 && relativeX < canvas.width) {
         paddleX = relativeX - paddleWidth / 2;
     }
 }
 
+const brickTexture = new Image()
+brickTexture.src = "brick-texture.png"
+
 // Draw Funktionen
 function drawBricks() {
+    const rowColors = ["#803200", "#B54400", "#D94E10", "#F25C05", "#CC7000", "#F28C05", "#F2A341", "#FFD9B3"]
+
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
-            const b = bricks[r][c];
+            const b = bricks[r][c]
             if (b.status === 1) {
-                ctx.beginPath();
-                ctx.rect(b.x, b.y, brickWidth, brickHeight);
-                ctx.fillStyle = "#F25C05";
-                ctx.fill();
-                ctx.strokeStyle = "#260C02";
-                ctx.stroke();
+                ctx.beginPath()
+                ctx.rect(b.x, b.y, brickWidth, brickHeight)
+                ctx.fillStyle = rowColors[r % rowColors.length]
+                ctx.strokeStyle = "#260C02"
+                ctx.stroke()
+                if (b.brickLives = 3) {
+                    ctx.fillStyle = "#000000"
+                }
+                if (b.brickLives = 2) {
+                    ctx.fillStyle = "#333333"
+                }
+                ctx.fill()
+                if (b.brickLives > 1) {
+                    ctx.drawImage(
+                        brickTexture,
+                        b.x, b.y,
+                        brickWidth, brickHeight
+                    );
+                }
             }
         }
     }
@@ -206,11 +224,11 @@ function drawBricks() {
 
 function drawCircle(x, y, color) {
     ctx.beginPath();
-    ctx.arc(x, y, ballRad, 0, Math.PI * 2, false);
+    ctx.arc(x, y, ballRad, 0, Math.PI * 2, false)
     ctx.fillStyle = color
     ctx.fill()
-    ctx.strokeStyle = '#260C02';
-    ctx.stroke();
+    ctx.strokeStyle = '#260C02'
+    ctx.stroke()
 }
 
 function drawPaddle() {
@@ -221,6 +239,16 @@ function drawPaddle() {
     ctx.closePath();
 }
 
+function safeBallPosition() {
+    const lowBrickY = brickOffsetTop + (rows * (brickHeight + brickPadding))
+
+    const safeY = lowBrickY + 25
+
+    const paddleY = canvas.height - paddleHeight
+    const distancePaddle = 100
+
+    return Math.min(safeY, paddleY - distancePaddle)
+}
 
 // Init Funktionen
 function setBrick() {
@@ -229,10 +257,23 @@ function setBrick() {
         for (let c = 0; c < cols; c++) {
             const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
             const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+
+            let brickLives;
+            const random = Math.random();
+
+            if (random < 0.70) {
+                brickLives = 1;
+            } else if (random < 0.95) {
+                brickLives = 2;
+            } else {
+                brickLives = 3;
+            }
+
             bricks[r][c] = {
                 x: brickX,
                 y: brickY,
-                status: 1
+                status: 1,
+                brickLives: brickLives,
             };
         }
     }
@@ -280,15 +321,18 @@ function collisionDetection() {
                         soundExplode();
                     }
 
-                    // Block entfernen und Punkte geben
-                    b.status = 0;
-                    hits++;
-                    points += 10;
+                    b.brickLives -= 1;
 
-                    // Zufälliges Item (20% Chance)
-                    if (Math.random() < 0.2) {
-                        const ran = Math.floor(Math.random() * 4) + 1;
-                        itemLock(ran);
+                    if (b.brickLives <= 0) {
+                        b.status = 0;
+                        hits++;
+                        points += 10;
+
+                        // Zufälliges Item (20% Chance)
+                        if (Math.random() < 0.2) {
+                            const ran = Math.floor(Math.random() * 4) + 1;
+                            itemLock(ran);
+                        }
                     }
                 }
             }
@@ -437,7 +481,7 @@ function gameRestart() {
 
     // Ball-Position und Grundgeschwindigkeit zurücksetzen
     x = canvas.width / 2
-    y = canvas.height - 30
+    y = safeBallPosition()
     dx = 1
     dy = -1
 
@@ -479,6 +523,12 @@ function gameStart() {
     pause = false
 
     setBrick()
+
+    x = canvas.width / 2
+    y = safeBallPosition()
+    dx = 1
+    dy = -1
+
     draw()
     pause = false
     document.getElementById("LivesJS").innerHTML = `${lives}`
