@@ -285,9 +285,6 @@ function collisionDetection() {
                     hits++;
                     points += 10;
 
-                    // Screen Flash Effekt
-                    screenFlash();
-
                     // Zufälliges Item (20% Chance)
                     if (Math.random() < 0.2) {
                         const ran = Math.floor(Math.random() * 4) + 1;
