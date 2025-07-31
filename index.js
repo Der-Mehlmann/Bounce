@@ -203,11 +203,11 @@ function drawBricks() {
                 ctx.fillStyle = rowColors[r % rowColors.length]
                 ctx.strokeStyle = "#260C02"
                 ctx.stroke()
-                if (b.brickLives = 3) {
+                if (b.brickLives === 3) {
                     ctx.fillStyle = "#000000"
                 }
-                if (b.brickLives = 2) {
-                    ctx.fillStyle = "#333333"
+                if (b.brickLives === 2) {
+                    ctx.fillStyle = "#555555"
                 }
                 ctx.fill()
                 if (b.brickLives > 1) {
