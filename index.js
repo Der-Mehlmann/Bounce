@@ -8,7 +8,8 @@ const explosion = new Audio('explosion.wav');
 const hit = new Audio('hit.wav');
 const itemUnlock = new Audio('itemUnlock.wav');
 const item = new Audio('item.wav');
-
+let background = new Audio('Background.mp3')
+background.loop = true
 
 // Eingabe listener
 document.addEventListener("keydown", keyDownHandler);
@@ -119,6 +120,7 @@ document.getElementById("Settings-F").addEventListener("submit", function (e) {
     e.preventDefault();
     // Save logic here
     soundEffects = document.getElementById("soundEffects").checked;
+    background = document.getElementById("background").checked;
     paddleWidth = parseInt(document.getElementById("paddleWidth").value)
     paddleSpeed = parseInt(document.getElementById("paddleSpeed").value)
     rows = parseInt(document.getElementById("rows").value)
@@ -415,6 +417,8 @@ function kill() {
     document.getElementById("Items").style.display = "none"
     document.getElementById("Stop-Kill-JS").innerHTML = `You achieved ${points} Points`
     stopGameTimer()
+    background.currentTime = 0
+    background.pause()
 }
 
 function winner() {
@@ -428,6 +432,8 @@ function winner() {
     document.getElementById("Items").style.display = "none"
     document.getElementById("Stop-Win-JS").innerHTML = `You achieved ${points} Points`
     stopGameTimer()
+    background.currentTime = 0
+    background.pause()
 }
 
 function hitAndKill() {
@@ -538,6 +544,8 @@ function gameRestart() {
     gameLoop()
     stopGameTimer()
     startGameTimer()
+    background.currentTime = 0
+    background.play()
 }
 
 
@@ -574,6 +582,8 @@ function gameStart() {
     document.getElementById("TimeFull").style.display = "block"
     gameLoop()
     startGameTimer()
+    background.currentTime = 0
+    background.play()
 }
 
 function settings() {
@@ -593,7 +603,7 @@ function gamePause() {
     document.getElementById("RG").style.display = "flex"
     document.getElementById("Items").style.display = "none"
     document.getElementById("HM").style.display = "flex"
-
+    background.pause()
 }
 
 function gameResume() {
@@ -607,7 +617,7 @@ function gameResume() {
     document.getElementById("Items").style.display = "flex"
     document.getElementById("HM").style.display = "none"
     gameLoop()
-
+    background.play()
 }
 
 //Item-Funktionen
